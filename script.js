@@ -1,5 +1,6 @@
 const isDev = location.port !== ''
 let api = isDev ? 'http://localhost:3000/api/generate' : ''
+let threadContainer = null
 
 const app = Vue.createApp({
   data() {
@@ -25,6 +26,7 @@ const app = Vue.createApp({
       }
     },
     onSend() {
+      this.scrollEnd()
       this.messageList.push({
         role: 'user',
         content: this.message,
@@ -33,6 +35,7 @@ const app = Vue.createApp({
     },
     async requestWithLatestMessage() {
       this.loading = true
+      this.message = ''
       this.currentAssistantMessage = ''
       try {
         const controller = new AbortController()
@@ -95,6 +98,11 @@ const app = Vue.createApp({
         this.loading = false
         this.controller = false
       }
+    },
+    scrollEnd() {
+      setTimeout(() => {
+        threadContainer && threadContainer.scrollTo({top: threadContainer.scrollHeight, behavior: 'smooth'})
+      }, 100)
     }
   },
   watch: {
@@ -107,6 +115,7 @@ const app = Vue.createApp({
           })
         } else {
           this.messageList[this.messageList.length - 1].content = val
+          this.scrollEnd()
         }
       }
     }
@@ -125,6 +134,7 @@ const app = Vue.createApp({
         }
       }
     }
+    threadContainer = document.querySelector('.thread-container')
   }
 })
 app.mount('#app')
