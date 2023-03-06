@@ -1,6 +1,6 @@
-# ChatGPT Vue Client (no build 无需编译)
+# ChatGPT Vue Client (no build, easy start)
 
-背景：目前 ChatGPT 项目通常将前后端代码放在同一个项目中，需要编译和运行，而且使用了 TypeScript 等高级特性，对于新手用户来说，上手有一定难度，特别是对于 Vue 项目来说，相关的项目也比较少。
+背景：目前 ChatGPT 项目通常将前后端代码放在同一个项目中，需要编译和运行，而且使用了 TypeScript 等高级特性，对于新手用户来说，上手有一定难度，特别是 Vue 相关项目比较少。
 
 因此，我们开发了这个项目，它可以简化学习和使用 ChatGPT API 的过程。
 

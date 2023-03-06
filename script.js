@@ -1,6 +1,20 @@
 const isDev = location.port !== ''
 let api = isDev ? 'http://localhost:3000/api/generate' : ''
 let threadContainer = null
+hljs.initHighlightingOnLoad();
+let md = window.markdownit({
+  highlight: function(str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return '<pre class="hljs"><code>' +
+               hljs.highlight(lang, str, true).value +
+               '</code></pre>';
+      } catch (__) {}
+    }
+
+    return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
+  }
+});
 
 const app = Vue.createApp({
   data() {
@@ -26,6 +40,7 @@ const app = Vue.createApp({
       }
     },
     onSend() {
+      if (this.loading) return
       this.scrollEnd()
       this.messageList.push({
         role: 'user',
@@ -103,6 +118,9 @@ const app = Vue.createApp({
       setTimeout(() => {
         threadContainer && threadContainer.scrollTo({top: threadContainer.scrollHeight, behavior: 'smooth'})
       }, 100)
+    },
+    renderMD(content) {
+      return md.render(content);
     }
   },
   watch: {
