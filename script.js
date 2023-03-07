@@ -1,5 +1,5 @@
 const isDev = location.port !== ''
-let api = isDev ? 'http://localhost:3000/api/generate' : ''
+let api
 let threadContainer = null
 hljs.initHighlightingOnLoad();
 let md = window.markdownit({
@@ -140,15 +140,21 @@ const app = Vue.createApp({
   },
   mounted() {
     if (isDev) {
+      api = 'http://localhost:3000/api/generate'
       this.messageList = [{ "role": "user", "content": "hi" }, { "role": "assistant", "content": "\n\nHello! I am an AI language model. How can I assist you today?" }, { "role": "user", "content": "js 代码实现二分查找" }, { "role": "assistant", "content": "下面是用JavaScript实现二分查找的示例代码：\n\n```javascript\nfunction binarySearch(arr, target) {\n  let left = 0;\n  let right = arr.length - 1;\n\n  while (left <= right) {\n    let mid = Math.floor((left + right) / 2);\n\n    if (arr[mid] === target) {\n      return mid;\n    } else if (arr[mid] < target) {\n      left = mid + 1;\n    } else {\n      right = mid - 1;\n    }\n  }\n\n  return -1;\n}\n\nconst arr = [1, 3, 5, 7, 9];\nconst target = 5;\nconst result = binarySearch(arr, target);\n\nconsole.log(result); // 2\n```\n\n这个函数接受两个参数：一个已排序的数组和要查找的目标值。它使用while循环来迭代左右指针，直到找到目标值或者左指针超过了右指针。在每次循环中，它计算中间索引，然后比较中间值和目标值的大小。如果中间值等于目标值，函数返回中间索引；如果中间值小于目标值，左指针移动到中间索引的右侧；如果中间值大于目标值，右指针移动到中间索引的左侧。如果没有找到目标值，函数返回-1。\n\n在上面的例子中，我们使用了一个已排序的数组[1, 3, 5, 7, 9]和要查找的目标值5。函数返回2，因为5在数组中的索引是2。" }]
     } else {
       const params = new URLSearchParams(location.search)
       const apiParam = params.get('api')
-      if (!api) {
-        if (apiParam) {
-          api = apiParam
+      if (apiParam) {
+        api = apiParam
+        localStorage.setItem('api', apiParam)
+        alert('设置 api 成功')
+      } else {
+        const apiCache = localStorage.getItem('api');
+        if (apiCache) {
+          api = apiCache
         } else {
-          alert('访问请指定 api，形如：https://chatgpt.oaker.bid/?api=YOUR_SERVICE_DOMAIN/api/generate')
+          alert('请指定 api，形如：https://chatgpt.oaker.bid/?api=YOUR_SERVICE_DOMAIN/api/generate')
         }
       }
     }

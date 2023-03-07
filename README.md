@@ -7,6 +7,7 @@
 ## 特点
 
 - 采用简单的 HTML + Script，结合 Vue 3 + Options api 实现
+- 代码不编译，不压缩，可直接在生产环境调试
 - 界面和体验仿照 ChatGPT 官网
 
 ![image](https://user-images.githubusercontent.com/3146103/222964346-99ea6d93-e110-42bf-a98a-dd30b5f74fa7.png)
@@ -16,7 +17,7 @@
 
 本项目只是前端部分，需要配合接口服务使用。
 
-请在访问时指定 API，例如：`https://chatgpt.oaker.bid/?api=YOUR_SERVICE_DOMAIN/api/generate`
+请在访问时指定一次 API，会存到浏览器中。例如：`https://chatgpt.oaker.bid/?api=YOUR_SERVICE_DOMAIN/api/generate`
 
 我们推荐的 API 服务项目是：https://github.com/ddiu8081/chatgpt-demo
 
