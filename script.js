@@ -105,7 +105,15 @@ const app = Vue.createApp({
         this.setLastMsgContent()
         this.currentAssistantMessage = ''
         this.loading = false
-        this.controller = false
+        this.controller = null
+      } else {
+        this.currentAssistantMessage = '...'
+      }
+    },
+    stopStreamFetch() {
+      if (this.controller) {
+        this.controller.abort()
+        this.archiveCurrentMessage()
       }
     },
     setLastMsgContent() {
@@ -118,7 +126,7 @@ const app = Vue.createApp({
       if (this.currentAssistantMessage) {
         this.currentAssistantMessage = ''
         this.loading = false
-        this.controller = false
+        this.controller = null
       }
     },
     scrollEnd() {
