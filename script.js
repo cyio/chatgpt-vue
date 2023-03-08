@@ -46,6 +46,10 @@ const app = Vue.createApp({
         role: 'user',
         content: this.message,
       })
+      this.messageList.push({
+        role: 'assistant',
+        content: '',
+      })
       this.requestWithLatestMessage()
     },
     async requestWithLatestMessage() {
@@ -98,13 +102,16 @@ const app = Vue.createApp({
     archiveCurrentMessage() {
       if (this.currentAssistantMessage) {
         console.log('archiveCurrentMessage')
-        this.messageList.push({
-          role: 'assistant',
-          content: this.currentAssistantMessage,
-        })
+        this.setLastMsgContent()
         this.currentAssistantMessage = ''
         this.loading = false
         this.controller = false
+      }
+    },
+    setLastMsgContent() {
+      const lastMsg = this.messageList[this.messageList.length - 1]
+      if (lastMsg.role === 'assistant') {
+        lastMsg.content = this.currentAssistantMessage
       }
     },
     resEnd() {
@@ -127,10 +134,7 @@ const app = Vue.createApp({
     'currentAssistantMessage': function (val, oldVal) {
       if (val) {
         if (!oldVal) {
-          this.messageList.push({
-            role: 'assistant',
-            content: this.currentAssistantMessage,
-          })
+          this.setLastMsgContent()
         } else {
           this.messageList[this.messageList.length - 1].content = val
           this.scrollEnd()
