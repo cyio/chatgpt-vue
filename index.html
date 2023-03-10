@@ -125,7 +125,10 @@
                 <div
                   class="flex flex-col w-full py-2 pl-3 md:py-3 md:pl-4 relative )} border border-black/10 bg-white dark:border-gray-900/50 dark:text-white dark:bg-gray-700 rounded-md shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
                   <textarea tabindex="0" data-id="request-:R2d6:-0" v-model.trim="message" @keydown.enter="handleKeydown"
-                    style="max-height: 200px; height: 24px; overflow-y: hidden;" rows="1" placeholder=""
+                    @input="onInput"
+                    style="max-height: 200px; height: 24px;" rows="1"
+                    ref="inputRef"
+                    placeholder=""
                     class="w-full resize-none focus:ring-0 focus-visible:ring-0 p-0 pr-7 m-0 border-0 bg-transparent dark:bg-transparent">
                   </textarea>
                   <button @click="onSend"

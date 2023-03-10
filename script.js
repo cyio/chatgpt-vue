@@ -132,6 +132,11 @@ const app = Vue.createApp({
     },
     toggleColor() {
       this.useLight = !this.useLight
+    },
+    onInput() {
+      const {inputRef} = this.$refs
+      inputRef.style.height = 'auto'; // 当删减输入时，scrollHeight 重置
+      inputRef.style.height = inputRef.scrollHeight + 'px';
     }
   },
   computed: {
