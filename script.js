@@ -1,12 +1,13 @@
 import {
   mockMsgList,
   isDev,
-  initMarkdown
+  initMarkdown,
+  initClipboard,
 } from './utils.js'
 
 let api
 let threadContainer = null
-const md = initMarkdown()
+let md
 
 const app = Vue.createApp({
   data() {
@@ -176,6 +177,8 @@ const app = Vue.createApp({
         }
       }
     }
+    md = initMarkdown()
+    initClipboard('.copy-btn')
     threadContainer = document.querySelector('.thread-container')
   }
 })

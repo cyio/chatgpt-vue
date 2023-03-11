@@ -3,11 +3,11 @@ const isDev = location.port !== ''
 
 function initMarkdown() {
   hljs.initHighlightingOnLoad();
-  return window.markdownit({
+  const md = window.markdownit({
     highlight: function(str, lang) {
       if (lang && hljs.getLanguage(lang)) {
         try {
-          return '<pre class="hljs"><code>' +
+          return `<pre class="hljs"><button class="copy-btn not-prose"><img class="clippy" width="13" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard"></button><code>` +
                 hljs.highlight(lang, str, true).value +
                 '</code></pre>';
         } catch (__) {}
@@ -16,10 +16,27 @@ function initMarkdown() {
       return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
     }
   });
+  return md
+}
+
+function initClipboard(target) {
+  const clipboard = new ClipboardJS(target, {
+    target: function(trigger) {
+      return trigger.nextElementSibling;
+    }
+  });
+
+  clipboard.on('success', function(e) {
+      e.trigger.classList.add('copied')
+      e.clearSelection()
+  });
+
+  return clipboard
 }
 
 export {
   mockMsgList,
   initMarkdown,
+  initClipboard,
   isDev
 }
