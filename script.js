@@ -18,7 +18,31 @@ const app = Vue.createApp({
       role: '',
       loading: false,
       controller: null,
-      useLight: true
+      useLight: true,
+      activePromptName: '自由模式',
+      systemRolePrompt: '',
+      prompts: [
+        {
+          name: '自由模式',
+          prompt: ''
+        },
+        {
+          name: '电脑专家',
+          prompt: '你作为计算机专家,提供IT支持'
+        },
+        {
+          name: '代码专家',
+          prompt: '你来协助代码实现，只输出代码'
+        },
+        {
+          name: '润色文档',
+          prompt: '你来润色文档'
+        },
+        {
+          name: '翻译助手',
+          prompt: '你作为翻译员，中英互译'
+        },
+      ]
     }
   },
   methods: {
@@ -53,10 +77,17 @@ const app = Vue.createApp({
       try {
         const controller = new AbortController()
         this.controller = controller
+        const messages = [...this.messageList]
+        if (this.systemRolePrompt) {
+          messages.unshift({
+            role: 'system',
+            content: this.systemRolePrompt
+          })
+        }
         const response = await fetch(api, {
           method: 'POST',
           body: JSON.stringify({
-            messages: this.messageList,
+            messages,
           }),
           signal: controller.signal,
         })
@@ -138,6 +169,11 @@ const app = Vue.createApp({
       const {inputRef} = this.$refs
       inputRef.style.height = 'auto'; // 当删减输入时，scrollHeight 重置
       inputRef.style.height = inputRef.scrollHeight + 'px';
+    },
+    setPromot({prompt, name}) {
+      this.activePromptName = name
+      this.systemRolePrompt = prompt
+      this.messageList = []
     }
   },
   computed: {
