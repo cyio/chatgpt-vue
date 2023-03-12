@@ -19,6 +19,7 @@ const app = Vue.createApp({
       loading: false,
       controller: null,
       useLight: true,
+      sideOpened: false,
       activePromptName: '自由模式',
       systemRolePrompt: '',
       search: '',
@@ -183,6 +184,7 @@ const app = Vue.createApp({
       this.activePromptName = name
       this.systemRolePrompt = prompt
       console.info('activePromptName', name)
+      this.sideOpened = false
       this.messageList = []
     },
     onSearchEnter() {
@@ -192,7 +194,13 @@ const app = Vue.createApp({
         this.setPromot(cur)
         this.$refs.inputRef.focus();
       }
-    }
+    },
+    handleOutsideClick(event) {
+      const shouldExclude = event.target.parentElement.classList.contains('mobile-menu')
+      if (!shouldExclude) {
+        this.sideOpened = false
+      }
+    },
   },
   computed: {
     colorScheme() {
@@ -213,6 +221,21 @@ const app = Vue.createApp({
           this.messageList[this.messageList.length - 1].content = val
           this.scrollEnd()
         }
+      }
+    }
+  },
+  directives: {
+    'outside-click': {
+      mounted(el, binding) {
+        el.clickOutsideEvent = function(event) {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value(event);
+          }
+        };
+        document.body.addEventListener('click', el.clickOutsideEvent);
+      },
+      unmounted(el) {
+        document.body.removeEventListener('click', el.clickOutsideEvent);
       }
     }
   },

@@ -58,3 +58,16 @@
     opacity: 0;
   }
 }
+
+.open-side {
+  position: fixed;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  display: flex;
+  z-index: 40;
+}
+
+.close-btn svg {
+  color: #333;
+}
