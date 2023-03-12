@@ -21,6 +21,7 @@ const app = Vue.createApp({
       useLight: true,
       activePromptName: '自由模式',
       systemRolePrompt: '',
+      search: '',
       prompts: [
         {
           name: '自由模式',
@@ -41,6 +42,14 @@ const app = Vue.createApp({
         {
           name: '翻译助手',
           prompt: '你作为翻译员，中英互译'
+        },
+        {
+          name: '英语矫正',
+          prompt: '你来做英语矫正'
+        },
+        {
+          name: 'SQL Translator',
+          prompt: 'Translate my natural language query into SQL'
         },
       ]
     }
@@ -173,12 +182,26 @@ const app = Vue.createApp({
     setPromot({prompt, name}) {
       this.activePromptName = name
       this.systemRolePrompt = prompt
+      console.info('activePromptName', name)
       this.messageList = []
+    },
+    onSearchEnter() {
+      const cur = this.filteredItems[0]
+      this.search = ''
+      if (cur) {
+        this.setPromot(cur)
+        this.$refs.inputRef.focus();
+      }
     }
   },
   computed: {
     colorScheme() {
       return this.useLight ? 'light' : 'dark'
+    },
+    filteredItems() {
+      return this.prompts.filter(
+          i => i.name.toLowerCase().includes(this.search.toLowerCase())
+      )
     }
   },
   watch: {
