@@ -4,8 +4,8 @@ import {
   initMarkdown,
   initClipboard,
 } from './utils.js'
+import { prompts } from './data.js'
 
-let api
 let threadContainer = null
 let md
 
@@ -20,39 +20,11 @@ const app = Vue.createApp({
       controller: null,
       useLight: true,
       sideOpened: false,
-      activePromptName: '自由模式',
+      activePromptName: prompts[0].name,
       systemRolePrompt: '',
       search: '',
-      prompts: [
-        {
-          name: '自由模式',
-          prompt: ''
-        },
-        {
-          name: '电脑专家',
-          prompt: '你作为计算机专家,提供IT支持'
-        },
-        {
-          name: '代码专家',
-          prompt: '你来协助代码实现，只输出代码'
-        },
-        {
-          name: '润色文档',
-          prompt: '你来润色文档'
-        },
-        {
-          name: '翻译助手',
-          prompt: '你作为翻译员，中英互译'
-        },
-        {
-          name: '英语矫正',
-          prompt: '你来做英语矫正'
-        },
-        {
-          name: 'SQL Translator',
-          prompt: 'Translate my natural language query into SQL'
-        },
-      ]
+      api: null,
+      prompts
     }
   },
   methods: {
@@ -68,6 +40,10 @@ const app = Vue.createApp({
       }
     },
     onSend() {
+      if (!this.api) {
+        this.inputApi()
+        return
+      }
       if (this.loading) return
       this.scrollEnd()
       this.messageList.push({
@@ -94,7 +70,7 @@ const app = Vue.createApp({
             content: this.systemRolePrompt
           })
         }
-        const response = await fetch(api, {
+        const response = await fetch(this.api, {
           method: 'POST',
           body: JSON.stringify({
             messages,
@@ -201,6 +177,17 @@ const app = Vue.createApp({
         this.sideOpened = false
       }
     },
+    setApi(value) {
+      this.api = value
+      localStorage.setItem('api', this.api)
+    },
+    inputApi() {
+      const append = this.api ? `\n\n当前 api: ${this.api}` : ''
+      const input = prompt('请指定 api，形如：https://chatgpt.oaker.bid/?api=YOUR_API_DOMAIN/api/generate' + append)
+      if (input) {
+        this.setApi(input)
+      }
+    }
   },
   computed: {
     colorScheme() {
@@ -241,21 +228,18 @@ const app = Vue.createApp({
   },
   mounted() {
     if (isDev) {
-      api = 'http://localhost:3000/api/generate'
+      this.api = 'http://localhost:3000/api/generate'
       this.messageList = mockMsgList
     } else {
       const params = new URLSearchParams(location.search)
       const apiParam = params.get('api')
       if (apiParam) {
-        api = apiParam
-        localStorage.setItem('api', apiParam)
-        alert('设置 api 成功')
+        this.setApi(apiParam)
       } else {
         const apiCache = localStorage.getItem('api');
         if (apiCache) {
-          api = apiCache
+          this.api = apiCache
         } else {
-          alert('请指定 api，形如：https://chatgpt.oaker.bid/?api=YOUR_SERVICE_DOMAIN/api/generate')
         }
       }
     }
