@@ -1,0 +1,21 @@
+{
+  "name": "ChatGPT",
+  "short_name": "ChatGPT",
+  "icons": [
+    {
+      "src": "assets/imgs/favicon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/imgs/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "lang": "zh",
+  "scope": "/"
+}
