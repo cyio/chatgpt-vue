@@ -172,7 +172,7 @@ const app = Vue.createApp({
       }
     },
     handleOutsideClick(event) {
-      const shouldExclude = event.target.parentElement.classList.contains('mobile-menu')
+      const shouldExclude = ['mobile-menu', 'mobile-menu-icon'].some(key => event.target.parentElement.classList.contains(key))
       if (!shouldExclude) {
         this.sideOpened = false
       }
