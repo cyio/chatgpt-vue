@@ -34,9 +34,21 @@ function initClipboard(target) {
   return clipboard
 }
 
+// 适配不同 api 入参
+function getPayload(messages, apiType = 'default') {
+  if (apiType === 'default') {
+    return { messages }
+  } else {
+    const userMessages = messages.filter(i => i.role === 'user')
+    const prompt = userMessages[userMessages.length - 1]?.content
+    return { prompt }
+  }
+}
+
 export {
   mockMsgList,
   initMarkdown,
   initClipboard,
+  getPayload,
   isDev
 }

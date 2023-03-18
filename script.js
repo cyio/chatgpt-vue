@@ -3,6 +3,7 @@ import {
   isDev,
   initMarkdown,
   initClipboard,
+  getPayload,
 } from './utils.js'
 import { prompts } from './data.js'
 
@@ -24,6 +25,7 @@ const app = Vue.createApp({
       systemRolePrompt: '',
       search: '',
       api: null,
+      apiType: 'default', // default or single
       prompts
     }
   },
@@ -72,9 +74,7 @@ const app = Vue.createApp({
         }
         const response = await fetch(this.api, {
           method: 'POST',
-          body: JSON.stringify({
-            messages,
-          }),
+          body: JSON.stringify(getPayload(messages, this.apiType)),
           signal: controller.signal,
         })
         if (!response.ok) {
@@ -177,13 +177,19 @@ const app = Vue.createApp({
         this.sideOpened = false
       }
     },
-    setApi(value) {
-      this.api = value
-      localStorage.setItem('api', this.api)
+    setApi(value, value1) {
+      if (value) {
+        this.api = value
+        localStorage.setItem('api', this.api)
+      }
+      if (value1) {
+        this.apiType = value1
+        localStorage.setItem('api-type', this.apiType)
+      }
     },
     inputApi() {
       const append = this.api ? `\n\n当前 api: ${this.api}` : ''
-      const input = prompt('请指定 api，形如：https://chatgpt.oaker.bid/?api=YOUR_API_DOMAIN/api/generate' + append)
+      const input = prompt('请指定 api，形如：https://your.com/api/generate' + append)
       if (input) {
         this.setApi(input)
       }
@@ -227,22 +233,12 @@ const app = Vue.createApp({
     }
   },
   mounted() {
-    if (isDev) {
-      this.api = 'http://localhost:3000/api/generate'
-      this.messageList = mockMsgList
-    } else {
-      const params = new URLSearchParams(location.search)
-      const apiParam = params.get('api')
-      if (apiParam) {
-        this.setApi(apiParam)
-      } else {
-        const apiCache = localStorage.getItem('api');
-        if (apiCache) {
-          this.api = apiCache
-        } else {
-        }
-      }
-    }
+    const params = new URLSearchParams(location.search)
+    let apiParam = params.get('api') || localStorage.getItem('api')
+    isDev && (apiParam = 'http://localhost:3000/api/generate')
+    isDev && (this.messageList = mockMsgList)
+    const apiTypeParam = params.get('api-type') || localStorage.getItem('api-type')
+    this.setApi(apiParam, apiTypeParam)
     md = initMarkdown()
     initClipboard('.copy-btn')
     threadContainer = document.querySelector('.thread-container')
