@@ -5,10 +5,12 @@ import {
   initClipboard,
   getPayload,
 } from './utils.js'
-import { prompts } from './data.js'
+import { getPrompts } from './data.js'
+import { lang, useEnglish } from './lang.js'
 
 let threadContainer = null
 let md
+const prompts = getPrompts(useEnglish)
 
 const app = Vue.createApp({
   data() {
@@ -26,7 +28,9 @@ const app = Vue.createApp({
       search: '',
       api: null,
       apiType: 'default', // default or single
-      prompts
+      prompts,
+      useEnglish,
+      lang
     }
   },
   methods: {

@@ -72,6 +72,9 @@ define(['./workbox'], (function (workbox) { 'use strict';
     url: "utils.js",
     revision: null
   }, {
+    url: "lang.js",
+    revision: null
+  }, {
     url: "script.js",
     revision: null
   }, {
@@ -82,13 +85,13 @@ define(['./workbox'], (function (workbox) { 'use strict';
     revision: null
   }, {
     url: "registerSW.js",
-    revision: "6d3d769b511ad02d5deea8b1300ab38d"
+    revision: "6d3d769b511ad02d5deea8b1300ab38e"
   }, {
     url: "index.html",
-    revision: "a08a8d966f71b9734b7e4d2a6ead0f8b"
+    revision: "a08a8d966f71b9734b7e4d2a6ead0f8e"
   },{
     url: "manifest.webmanifest",
-    revision: "6d3d769b511ad02d5deea8b1300ab38d"
+    revision: "6d3d769b511ad02d5deea8b1300ab38e"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html")));
