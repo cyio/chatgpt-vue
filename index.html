@@ -85,8 +85,8 @@
                       <div class="relative lg:w-[calc(100%-115px)] w-full flex flex-col">
                         <div v-if="!messageItem.content" class="blink-cursor"></div>
                         <div v-else class="min-h-[20px] flex flex-col items-start gap-4 bot-content">
-                          <button class="copy-btn copy-btn-content not-prose"><img class="clippy" width="13" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard"></button>
-                          <div class="markdown prose w-full break-words dark:prose-invert light" v-html="renderMD(messageItem.content)">
+                          <button class="copy-btn copy-btn-trigger copy-btn-content not-prose"><img class="clippy" width="13" src="https://clipboardjs.com/assets/images/clippy.svg" alt="Copy to clipboard"></button>
+                          <div class="markdown prose w-full break-words dark:prose-invert light" v-html="renderMD(messageItem.content)" :data-raw="messageItem.content">
                           </div>
                         </div>
                       </div>

@@ -244,7 +244,7 @@ const app = Vue.createApp({
     const apiTypeParam = params.get('api-type') || localStorage.getItem('api-type')
     this.setApi(apiParam, apiTypeParam)
     md = initMarkdown()
-    initClipboard('.copy-btn')
+    initClipboard('.copy-btn-trigger')
     threadContainer = document.querySelector('.thread-container')
   }
 })
