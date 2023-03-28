@@ -33,6 +33,10 @@ const _lang = {
   setAPI: {
     en: 'Set API',
     zh: '设置 API'
+  },
+  version: {
+    en: 'version',
+    zh: '版本号'
   }
 }
 

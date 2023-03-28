@@ -71,3 +71,11 @@
 .close-btn svg {
   color: #333;
 }
+
+.nav-bottom {
+  position: absolute;
+  bottom: 40px;
+  color: #eee;
+  left: 20px;
+  font-size: 12px;
+}

@@ -59,6 +59,7 @@ define(['./workbox'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
+  const revision = new Date().toISOString();
 
   /**
    * The precacheAndRoute() method efficiently caches and responds to
@@ -67,31 +68,31 @@ define(['./workbox'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     url: "data.js",
-    revision: null
+    revision
   }, {
     url: "utils.js",
-    revision: null
+    revision
   }, {
     url: "lang.js",
-    revision: null
+    revision
   }, {
     url: "script.js",
-    revision: null
+    revision
   }, {
     url: "tailwind.css",
     revision: null
   }, {
     url: "main.css",
-    revision: null
+    revision
   }, {
     url: "registerSW.js",
-    revision: "6d3d769b511ad02d5deea8b1300ab38e"
+    revision
   }, {
     url: "index.html",
-    revision: "a08a8d966f71b9734b7e4d2a6ead0f8e"
+    revision
   },{
     url: "manifest.webmanifest",
-    revision: "6d3d769b511ad02d5deea8b1300ab38e"
+    revision
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html")));

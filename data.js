@@ -47,7 +47,10 @@ function getPrompts(useEnglish) {
   }
 }
 
+const version = '1.0.2'
+
 export {
   prompts,
-  getPrompts
+  getPrompts,
+  version,
 }

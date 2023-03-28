@@ -5,7 +5,7 @@ import {
   initClipboard,
   getPayload,
 } from './utils.js'
-import { getPrompts } from './data.js'
+import { getPrompts, version } from './data.js'
 import { lang, useEnglish } from './lang.js'
 
 let threadContainer = null
@@ -30,7 +30,8 @@ const app = Vue.createApp({
       apiType: 'default', // default or single
       prompts,
       useEnglish,
-      lang
+      lang,
+      version,
     }
   },
   methods: {
