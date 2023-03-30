@@ -1,3 +1,4 @@
+// import {html, css, LitElement} from 'lit';
 import {
   mockMsgList,
   isDev,
@@ -11,6 +12,7 @@ import { lang, useEnglish } from './lang.js'
 let threadContainer = null
 let md
 const prompts = getPrompts(useEnglish)
+// console.log('import', LitElement)
 
 const app = Vue.createApp({
   data() {
