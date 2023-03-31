@@ -6,7 +6,7 @@
   <title>ChatGPT</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.2.0/styles/default.min.css">
-  <script async src="https://unpkg.com/es-module-shims@0.13.1/dist/es-module-shims.js"></script>
+  <!-- <script async src="https://un  pkg.com/es-module-shims@0.13.1/dist/es-module-shims.js"></script> -->
   <script type="importmap">
     {
       "imports": {
@@ -20,28 +20,8 @@
     }
   </script>
   <script type="module">
-    import {html, css, LitElement} from 'lit';
-    console.log('import: ', LitElement)
-    import {styles} from './shared-styles.js';
-    
-    export class SimpleGreeting extends LitElement {
-      static styles = styles;
-    
-      static properties = {
-        name: {type: String},
-      };
-    
-      constructor() {
-        super();
-        this.name = 'Somebody';
-      }
-    
-      render() {
-        return html`
-          <p>Hello, ${this.name}!</p>`
-      }
-    }
-    customElements.define('simple-greeting', SimpleGreeting);
+    import VersionNum from './components/VersionNum/index.js'
+    customElements.define('version-num', VersionNum);
   </script>    
   <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/markdown-it@12.0.4/dist/markdown-it.min.js"></script>
@@ -62,7 +42,6 @@
 
 <body>
   <div id="app" v-cloak>
-    <simple-greeting name="ChatGPT"></simple-greeting>
     <div class="overflow-hidden w-full h-full relative" :class="[colorScheme]">
       <div class="flex h-full flex-1 flex-col md:pl-[260px]">
         <div
@@ -234,7 +213,7 @@
               </div>
             </nav>
             <div class="nav-bottom">
-              <div class="nav-ver">{{lang.version}}: {{version}}</div>
+              <version-num :label="lang.version" :num="version" />
             </div>
           </div>
         </div>
