@@ -1,0 +1,20 @@
+{
+  "name": "chatgpt-vue",
+  "version": "1.0.0",
+  "description": "[中文说明](./README-zh.md)",
+  "main": "data.js",
+  "scripts": {
+    "dev": "npx live-server --ignore='$PWD/.git/**'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyio/chatgpt-vue.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cyio/chatgpt-vue/issues"
+  },
+  "homepage": "https://github.com/cyio/chatgpt-vue#readme"
+}

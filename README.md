@@ -24,7 +24,8 @@ We recommend using the API service project: https://github.com/ddiu8081/chatgpt-
 ## Development
 
 ```sh
-vite serve ./
+npm i
+npm run dev
 ``` 
 
 The above is the development command for this project.

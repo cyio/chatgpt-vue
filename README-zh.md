@@ -22,7 +22,8 @@
 ## 开发
 
 ```sh
-vite serve ./
+npm i
+npm run dev
 ``` 
 
 以上是本项目的开发命令。
