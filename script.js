@@ -31,6 +31,7 @@ const app = Vue.createApp({
       prompts,
       useEnglish,
       lang,
+      mdReady: false,
       version,
     }
   },
@@ -151,7 +152,7 @@ const app = Vue.createApp({
       }, 100)
     },
     renderMD(content) {
-      return md.render(content);
+      return this.mdReady ? md.render(content) : content;
     },
     toggleColor() {
       this.useLight = !this.useLight
@@ -178,7 +179,7 @@ const app = Vue.createApp({
     },
     handleOutsideClick(event) {
       const shouldExclude = ['mobile-menu', 'mobile-menu-icon'].some(key => event.target.parentElement.classList.contains(key))
-      if (!shouldExclude) {
+      if (!shouldExclude && this.sideOpened) {
         this.sideOpened = false
       }
     },
@@ -198,6 +199,13 @@ const app = Vue.createApp({
       if (input) {
         this.setApi(input)
       }
+    },
+    handleMarkdown() {
+      setTimeout(() => {
+        md = initMarkdown()
+        initClipboard('.copy-btn-trigger')
+        this.mdReady = true
+      }, 600)
     }
   },
   computed: {
@@ -244,8 +252,7 @@ const app = Vue.createApp({
     isDev && (this.messageList = mockMsgList)
     const apiTypeParam = params.get('api-type') || localStorage.getItem('api-type')
     this.setApi(apiParam, apiTypeParam)
-    md = initMarkdown()
-    initClipboard('.copy-btn-trigger')
+    this.handleMarkdown()
     threadContainer = document.querySelector('.thread-container')
   }
 })

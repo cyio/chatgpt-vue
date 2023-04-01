@@ -5,22 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ChatGPT</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@3.2.26/dist/vue.global.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.2.0/styles/default.min.css">
-  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it@12.0.4/dist/markdown-it.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.7.0/build/highlight.min.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/markdown-it@12.0.4/dist/markdown-it.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
   <script type="module" src="utils.js"></script>
   <script type="module" src="data.js"></script>
   <script type="module" src="script.js"></script>
-  <link rel='stylesheet' href='./tailwind.css'>
   <link rel='stylesheet' href='./main.css'>
+  <link rel="preload" href="./tailwind.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/highlight.js@11.2.0/styles/default.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
   <link rel="icon" href="/assets/imgs/favicon.png">
   <style>
     [v-cloak] {
       display: none;
     }
   </style>
-  <link rel="manifest" href="/manifest.webmanifest"><script src="registerSW.js"></script>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <script defer src="registerSW.js"></script>
 </head>
 
 <body>
@@ -139,7 +140,7 @@
           </div>
         </main>
       </div>
-      <div class="dark hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col"
+      <div id="side-bar" class="dark hidden bg-gray-900 md:fixed md:inset-y-0 md:flex md:w-[260px] md:flex-col"
         :class="{'open-side': sideOpened}"
       >
         <div class="flex min-h-0 h-full flex-col" v-outside-click="handleOutsideClick">
