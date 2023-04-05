@@ -178,10 +178,10 @@ const app = Vue.createApp({
       }
     },
     handleOutsideClick(event) {
-      const shouldExclude = ['mobile-menu', 'mobile-menu-icon'].some(key => event.target.parentElement.classList.contains(key))
-      if (!shouldExclude && this.sideOpened) {
-        this.sideOpened = false
-      }
+      // const shouldExclude = ['mobile-menu', 'mobile-menu-icon'].some(key => event.target.parentElement.classList.contains(key))
+      // if (!shouldExclude && this.sideOpened) {
+      //   this.sideOpened = false
+      // }
     },
     setApi(value, value1) {
       if (value) {

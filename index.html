@@ -157,7 +157,7 @@
         :class="{'open-side': sideOpened}"
       >
         <div class="flex min-h-0 h-full flex-col" v-outside-click="handleOutsideClick">
-          <div v-show="sideOpened" @click="sideOpened = false" class="absolute top-0 right-0 -mr-12 pt-2 opacity-100 close-btn"><button type="button" class="ml-1 flex h-10 w-10 items-center justify-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" tabindex="0"><span class="sr-only">Close sidebar</span><svg stroke="currentColor" fill="none" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+          <div v-show="sideOpened" @click="sideOpened = false" class="absolute top-0 right-0 -mr-12 pt-2 opacity-100 close-btn"><button type="button" class="ml-1 flex h-10 w-10 items-center justify-center focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" tabindex="0"><span class="sr-only">Close sidebar</span><svg :stroke="useLight ? 'currentColor' : '#fff'" fill="none" stroke-width="1.5" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-white" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
           <div class="flex flex-1 w-full items-start border-white/20">
             <nav class="flex-1 space-y-1 m-2 pb-2">
               <a @click="resetThread"
