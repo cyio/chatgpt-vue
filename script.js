@@ -71,7 +71,7 @@ const app = Vue.createApp({
       try {
         const controller = new AbortController()
         this.controller = controller
-        const messages = [...this.messageList]
+        const messages = [...this.messageList].filter(i => i.content !== '')
         if (this.systemRolePrompt) {
           messages.unshift({
             role: 'system',
@@ -205,7 +205,7 @@ const app = Vue.createApp({
         md = initMarkdown()
         initClipboard('.copy-btn-trigger')
         this.mdReady = true
-      }, 600)
+      }, 400)
     }
   },
   computed: {
