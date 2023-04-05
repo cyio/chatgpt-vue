@@ -59,7 +59,7 @@
   }
 }
 
-.open-side {
+#side-bar.open-side {
   position: fixed;
   bottom: 0;
   top: 0;

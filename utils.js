@@ -2,6 +2,7 @@ const mockMsgList = [{"role":"user","content":"hi"},{"role":"assistant","content
 const isDev = location.port !== ''
 
 function initMarkdown() {
+  if (!window.hljs || !window.markdownit) return
   hljs.highlightAll();
   const md = window.markdownit({
     linkify: true,
