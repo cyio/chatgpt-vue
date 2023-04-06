@@ -4,7 +4,7 @@
   "description": "[中文说明](./README-zh.md)",
   "main": "data.js",
   "scripts": {
-    "dev": "npx live-server --ignore='$PWD/.git/**'"
+    "dev": "web-dev-server --node-resolve --open --watch"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/cyio/chatgpt-vue/issues"
   },
-  "homepage": "https://github.com/cyio/chatgpt-vue#readme"
+  "homepage": "https://github.com/cyio/chatgpt-vue#readme",
+  "devDependencies": {
+    "@web/dev-server": "^0.1.38",
+    "koa-proxies": "^0.12.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3"
+  }
 }

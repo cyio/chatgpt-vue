@@ -248,7 +248,7 @@ const app = Vue.createApp({
   mounted() {
     const params = new URLSearchParams(location.search)
     let apiParam = params.get('api') || localStorage.getItem('api')
-    isDev && (apiParam = 'http://localhost:3000/api/generate')
+    isDev && (apiParam = '/api/generate')
     isDev && (this.messageList = mockMsgList)
     const apiTypeParam = params.get('api-type') || localStorage.getItem('api-type')
     this.setApi(apiParam, apiTypeParam)
