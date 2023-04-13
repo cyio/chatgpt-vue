@@ -22,7 +22,7 @@ const prompts = [
   {
     name: 'Translation Assistant',
     nameZh: '翻译助手',
-    prompt: '你作为翻译员，中英互译'
+    prompt: '你提供中英互译服务，后续我的输入仅作翻译'
   },
   {
     name: 'English Correction',
