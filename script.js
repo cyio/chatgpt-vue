@@ -3,6 +3,7 @@ import {
   isDev,
   initMarkdown,
   initClipboard,
+  scrollHelper,
   getPayload,
 } from './utils.js'
 import { getPrompts, version } from './data.js'
@@ -10,6 +11,8 @@ import { lang, useEnglish } from './lang.js'
 
 let threadContainer = null
 let md
+let tId
+
 const prompts = getPrompts(useEnglish)
 
 const app = Vue.createApp({
@@ -33,6 +36,7 @@ const app = Vue.createApp({
       lang,
       mdReady: false,
       version,
+      scrollHelper: null
     }
   },
   methods: {
@@ -90,13 +94,15 @@ const app = Vue.createApp({
         if (!data) {
           throw new Error('No data')
         }
+        this.scrollHelper.registerScroll()
+  
         const reader = data.getReader()
         const decoder = new TextDecoder('utf-8')
         let done = false
 
         while (!done) {
           const { value, done: readerDone } = await reader.read()
-          isDev && console.log('debug', +new Date(), value, readerDone)
+          // isDev && console.log('debug', +new Date(), value, readerDone)
           if (value) {
             let char = decoder.decode(value)
             if (char === '\n' && this.currentAssistantMessage.endsWith('\n')) {
@@ -224,8 +230,12 @@ const app = Vue.createApp({
         if (!oldVal) {
           this.setLastMsgContent()
         } else {
-          this.messageList[this.messageList.length - 1].content = val
-          this.scrollEnd()
+            // 这里没必要节流，stream data 间隔在 50ms 以上
+            this.messageList[this.messageList.length - 1].content = val
+            // 当用户滚动时，停止自动滚动
+            if (!this.scrollHelper.getUserScrollFlag()) {
+              this.scrollEnd()
+            }
         }
       }
     }
@@ -254,6 +264,7 @@ const app = Vue.createApp({
     this.setApi(apiParam, apiTypeParam)
     this.handleMarkdown()
     threadContainer = document.querySelector('.thread-container')
+    this.scrollHelper = scrollHelper(threadContainer)
   }
 })
 app.mount('#app')

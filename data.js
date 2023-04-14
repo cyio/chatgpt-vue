@@ -34,6 +34,11 @@ const prompts = [
     nameZh: 'SQL翻译',
     prompt: 'Translate my natural language query into SQL'
   },
+  {
+    name: 'Family Doctor',
+    nameZh: '家庭医生',
+    prompt: '你提供家庭医生服务，根据我的描述，判断符合哪些病症，最可能是哪种病，给出发病原理和建议'
+  }
 ]
 
 function getPrompts(useEnglish) {
@@ -47,7 +52,7 @@ function getPrompts(useEnglish) {
   }
 }
 
-const version = '1.0.6'
+const version = '1.0.8'
 
 export {
   prompts,

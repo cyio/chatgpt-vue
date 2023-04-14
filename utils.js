@@ -48,10 +48,39 @@ function getPayload(messages, apiType = 'default') {
   }
 }
 
+function scrollHelper(dom) {
+  let userScrollFlag = false
+
+  function onScroll() {
+    console.log('onScroll')
+    if (!userScrollFlag) {
+      console.log('onScroll 2')
+      userScrollFlag = true
+      dom.removeEventListener('scroll', onScroll)
+    }
+  }
+
+  function registerScroll() {
+    userScrollFlag = false
+    dom.addEventListener('scroll', onScroll);
+  }
+
+  function getUserScrollFlag() {
+    return userScrollFlag
+  }
+
+  return {
+    getUserScrollFlag,
+    onScroll,
+    registerScroll
+  }
+}
+
 export {
   mockMsgList,
   initMarkdown,
   initClipboard,
   getPayload,
+  scrollHelper,
   isDev
 }
