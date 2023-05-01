@@ -41,7 +41,7 @@ const prompts = [
   }
 ]
 
-function getPrompts(useEnglish) {
+function getPrompts(prompts, useEnglish) {
   if (useEnglish) {
     return prompts
   } else {
@@ -52,7 +52,7 @@ function getPrompts(useEnglish) {
   }
 }
 
-const version = '1.0.8'
+const version = '1.0.10'
 
 export {
   prompts,

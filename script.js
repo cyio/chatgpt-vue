@@ -266,6 +266,11 @@ const app = Vue.createApp({
     this.handleMarkdown()
     threadContainer = document.querySelector('.thread-container')
     this.scrollHelper = scrollHelper(threadContainer)
+    fetchConfig('/chatgpt/prompts').then(res => {
+      console.log(res)
+      this.prompts = getPrompts(res, useEnglish)
+      this.activePromptName = this.prompts[0].name
+    })
   }
 })
 app.mount('#app')
