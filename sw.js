@@ -1,100 +1,106 @@
-// If the loader is already loaded, just stop.
-if (!self.define) {
-  let registry = {};
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js')
 
-  // Used for `eval` and `importScripts` where we can't get script URL by other means.
-  // In both cases, it's safe to use a global var because those functions are synchronous.
-  let nextDefineUri;
+const { precaching, routing, strategies } = workbox;
 
-  const singleRequire = (uri, parentUri) => {
-    uri = new URL(uri + ".js", parentUri).href;
-    return registry[uri] || (
-      
-        new Promise(resolve => {
-          if ("document" in self) {
-            const script = document.createElement("script");
-            script.src = uri;
-            script.onload = resolve;
-            document.head.appendChild(script);
-          } else {
-            nextDefineUri = uri;
-            importScripts(uri);
-            resolve();
-          }
-        })
-      
-      .then(() => {
-        let promise = registry[uri];
-        if (!promise) {
-          throw new Error(`Module ${uri} didn’t register its module`);
-        }
-        return promise;
-      })
-    );
-  };
+const {registerRoute} = workbox.routing;
+const {CacheFirst, NetworkFirst} = workbox.strategies;
+const {CacheableResponse, CacheableResponsePlugin} = workbox.cacheableResponse;
 
-  self.define = (depsNames, factory) => {
-    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
-    if (registry[uri]) {
-      // Module is already loading or loaded.
-      return;
-    }
-    let exports = {};
-    const require = depUri => singleRequire(depUri, uri);
-    const specialDeps = {
-      module: { uri },
-      exports,
-      require
-    };
-    registry[uri] = Promise.all(depsNames.map(
-      depName => specialDeps[depName] || require(depName)
-    )).then(deps => {
-      factory(...deps);
-      return exports;
-    });
-  };
-}
+self.skipWaiting(); // 跳过等待，立即激活 SW
+// self.clients.claim(); // 控制所有同源客户端，确保使用新缓存策略，不要用？
 
-define(['./workbox'], (function (workbox) { 'use strict';
-
-  self.skipWaiting();
-  workbox.clientsClaim();
-  const revision = new Date().toISOString();
-
-  /**
-   * The precacheAndRoute() method efficiently caches and responds to
-   * requests for URLs in the manifest.
-   * See https://goo.gl/S9QRab
-   */
-  workbox.precacheAndRoute([{
+// 离线优先，安装后立即生效
+self.addEventListener('install', (event) => {
+  const urls = [{
     url: "data.js",
-    revision
+    revision: null
   }, {
     url: "utils.js",
-    revision
+    revision: null
   }, {
     url: "lang.js",
-    revision
+    revision: null
   }, {
     url: "script.js",
-    revision
+    revision: null
   }, {
     url: "tailwind.css",
     revision: null
   }, {
     url: "main.css",
-    revision
+    revision: null
   }, {
     url: "registerSW.js",
-    revision
+    revision: null
   }, {
     url: "index.html",
-    revision
-  },{
+    revision: null
+  }, {
     url: "manifest.webmanifest",
-    revision
-  }], {});
-  workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html")));
+    revision: null
+  }];
 
+  const precacheManifest = urls.map((url) => {
+    return {
+      url: url.url,
+      revision: url.revision || null
+    };
+  });
+
+  precaching.precacheAndRoute(precacheManifest);
+});
+
+// 清理缓存
+self.addEventListener('activate', (event) => {
+  event.waitUntil(caches.keys().then((cacheNames) => {
+    return Promise.all(
+      cacheNames.filter((cacheName) => {
+        return cacheName.startsWith('workbox-');
+      }).map((cacheName) => {
+        return caches.delete(cacheName);
+      })
+    );
+  }));
+});
+
+// registerRoute(({request}) => request.destination === 'style', new CacheFirst());
+registerRoute(({request}) => {
+  console.log('request.destination', request.destination)
+  return /script|document/.test(request.destination)
+}, new NetworkFirst({
+  networkTimeoutSeconds: 3,
+  cacheName: 'static-resources-critical',
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [200],
+    }),
+  ],
 }));
+
+registerRoute(({request}) => {
+  console.log('request.destination', request.destination)
+  return /image|style/.test(request.destination)
+}, new CacheFirst({
+  networkTimeoutSeconds: 3,
+  cacheName: 'static-resources',
+  plugins: [
+    new CacheableResponsePlugin({
+      statuses: [200],
+    }),
+  ],
+}));
+
+// // 处理 navigation 请求
+// routing.registerRoute(
+//   new strategies.NetworkFirst({
+//     cacheName: 'navigation-cache',
+//     plugins: [
+//       new CacheableResponsePlugin({
+//         statuses: [0, 200],
+//       })
+//     ]
+//   }),
+//   // new workbox.NavigationRoute(({ event }) => {
+//   //   return '/';
+//   // })
+// );

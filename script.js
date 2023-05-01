@@ -5,15 +5,16 @@ import {
   initClipboard,
   scrollHelper,
   getPayload,
+  fetchConfig,
 } from './utils.js'
-import { getPrompts, version } from './data.js'
+import { getPrompts, version, prompts } from './data.js'
 import { lang, useEnglish } from './lang.js'
 
 let threadContainer = null
 let md
 let tId
 
-const prompts = getPrompts(useEnglish)
+const defaultPrompts = getPrompts(prompts, useEnglish)
 
 const app = Vue.createApp({
   data() {
@@ -26,12 +27,12 @@ const app = Vue.createApp({
       controller: null,
       useLight: true,
       sideOpened: false,
-      activePromptName: prompts[0].name,
+      activePromptName: defaultPrompts[0].name,
       systemRolePrompt: '',
       search: '',
       api: null,
       apiType: 'default', // default or single
-      prompts,
+      prompts: defaultPrompts,
       useEnglish,
       lang,
       mdReady: false,
